@@ -29,9 +29,51 @@ Please refer to this link for latest training and evaluation results, learning c
 
 * [benchmarks/MetaDrive-0.2.5](benchmarks/MetaDrive-0.2.5)
 
+## My Installation - Ran
+This requires you to download and install ANACONDA (https://www.anaconda.com/download) on your machine.
 
+**1. Create the virtual environment**
+```bash
+# Install CoPO repo
+git clone git@github.com:rjingHD/CoPO.git
+# make sure you are in the conda base environment before the command below - this will quick the virtual environment named "copo-auto"
+cd CoPO
+python copo-env-setup.py
+```
+**2. Loose the package requirement (can be skipped since I already changed the file, just FYI.)**
 
-## Installation
+Since the ```ray[rllib]``` somehow requires gym version 0.23.1 that conflicts with the metadrive 0.2.5 required gym version of 0.19.0. Let pip attempt to solve the dependency conflict by commenting out the version requirement in ray (rllib). To do so, open the file ```~/CoPO/copo_code/setup.py``` comment out the two lines with "ray" such that the code looks like this: (not sure if this causes any issues yet.)
+```bash
+setup(
+    name="copo",
+    install_requires=[
+        "yapf==0.30.0",
+        # "ray==2.2.0",
+        # "ray[rllib]==2.2.0",
+        "tensorflow==2.3.1",
+        "torch",
+        "tensorflow-probability==0.11.1",
+        "tensorboardX",
+        "gym==0.19.0"
+    ],
+    license="Apache 2.0",
+)
+```
+**3. install CoPO in the virtual environment (copo-auto)**
+```bash
+# activate the conda virtual env 
+conda activate copo-auto
+# install CoPO now
+cd ~/CoPO  # Go to repo root.
+cd copo_code
+pip install -e .
+# now you can test by executing the command in training/visualization/evaluation sections in the README. 
+# for example
+cd ~/CoPO  # Go to repo root.
+python ./copo_code/copo/torch_copo/train_ccppo.py
+```
+
+## Official Installation - not used for now - buggy
 
 ```bash
 # Create virtual environment
