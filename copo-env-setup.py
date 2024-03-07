@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 
-# Setup script for ezloop-hw. Creates a conda environment and installs require prerequisite packages via conda.
-# (C) Andrew Sabelhaus and Kiyn Chin, 2020-2022
+# Setup script for CoPO. Creates a conda environment and installs require prerequisite packages via conda.
+# To generate the yml file for all packages required in a conda environment, when the environment is activated, run:
+# "conda env export > environment.yml" and the file named "environment.yml" will be generated in the current directory.     
+# (C) Ran Jing, Andrew Sabelhaus and Kiyn Chin, 2020-2024 
+
+## pip install wheel==0.38.4
 
 # REQUIRES:
 #   - Python3 installed (so this file can run)

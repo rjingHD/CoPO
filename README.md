@@ -40,6 +40,8 @@ git clone git@github.com:rjingHD/CoPO.git
 cd CoPO
 python copo-env-setup.py
 ```
+If the installation fails, check step 2 and 3 for potential solutions.
+
 **2. Loose the package requirement (can be skipped since I already changed the file, just FYI.)**
 
 Since the ```ray[rllib]``` somehow requires gym version 0.23.1 that conflicts with the metadrive 0.2.5 required gym version of 0.19.0. Let pip attempt to solve the dependency conflict by commenting out the version requirement in ray (rllib). To do so, open the file ```~/CoPO/copo_code/setup.py``` comment out the two lines with "ray" such that the code looks like this: (not sure if this causes any issues yet.)
@@ -59,7 +61,46 @@ setup(
     license="Apache 2.0",
 )
 ```
-**3. install CoPO in the virtual environment (copo-auto)**
+
+**3. maybe optional? - correct opencv & wheel issue.**
+
+If during the installation, you face an error like this
+```
+wheel.vendored.packaging.requirements.InvalidRequirement: Expected end or semicolon (after version specifier)
+opencv-python>=3.
+~~~^
+[end of output]
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+ERROR: Failed building wheel for gym
+```
+A ugly solution towards this can be:
+```bash
+cd /home/$YOUR_USER_NAME$/anaconda3/envs/copo-auto/lib/python3.7/site-packages/wheel/vendored/packaging/
+gedit requirements.py
+```
+In `requirements.py`,
+change line 33-37 from:
+```
+    def __init__(self, requirement_string: str) -> None:
+        try:
+            parsed = _parse_requirement(requirement_string)
+        except ParserSyntaxError as e:
+            raise InvalidRequirement(str(e)) from e
+```
+to:
+```
+    def __init__(self, requirement_string: str) -> None:
+        try:
+            if requirement_string.find('opencv-python>=3.')>=0:
+                requirement_string += "0"    # opencv-python>=3.0
+            parsed = _parse_requirement(requirement_string)
+        except ParserSyntaxError as e:
+            raise InvalidRequirement(str(e)) from e
+```
+This solution comes from: (https://github.com/openai/gym/issues/3202)
+
+**4. install CoPO in the virtual environment (copo-auto)**
 ```bash
 # activate the conda virtual env 
 conda activate copo-auto
